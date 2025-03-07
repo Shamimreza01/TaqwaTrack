@@ -38,28 +38,30 @@ export default function App() {
         setCoords({ latitude, longitude });
 
         let date = new Date();
-        let d = date.getDate().toString().padStart(2, "0"); 
+        let d = date.getDate().toString().padStart(2, "0");
         let m = (date.getMonth() + 1).toString().padStart(2, "0");
         let y = date.getFullYear();
         let formattedDate = `${y}-${m}-${d}`;
-        if (
-          formattedDate === JSON.parse(localStorage.getItem("timeData")).date
-        ) {
-          setTime(JSON.parse(localStorage.getItem("timeData")));
+
+        const storedTimeData = JSON.parse(localStorage.getItem("timeData"));
+        // Compare the date stored in timeData to the current date
+        if (formattedDate === storedTimeData?.date) {
+          setTime(storedTimeData);
         } else {
-          const newTime = Promise.all(getAllTime(latitude, longitude));
+          const newTime = await getAllTime(latitude, longitude); // `getAllTime` doesn't need `Promise.all`
           setTime(newTime);
           localStorage.setItem("timeData", JSON.stringify(newTime));
         }
         setLocationName(JSON.parse(localStorage.getItem("locationName")));
-        console.log("i am taking data from localstorage");
+        console.log("Using data from localStorage");
       } else {
         const pos = await getGeolocation();
         setCoords(pos);
         fetchLocationAndTime(pos.latitude, pos.longitude);
-        console.log("i am taking data from api");
+        console.log("Fetching data from API");
       }
     };
+
     loadInitialData();
   }, []);
 
