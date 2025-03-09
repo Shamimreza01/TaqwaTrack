@@ -1,7 +1,7 @@
 import React from "react";
 import AlQuranCard from "./AlQuran";
-import AlQuran1 from "../assets/Al-Quran.jpg";
-import AlQuran2 from '../Assets/Al-Quran-Topview.jpg'
+import AlQuran1 from "../Assets/AlQuran.jpg";
+import AlQuran2 from '../Assets/AlQuran2.jpg'
 import AlQuran3 from '../Assets/AlQuran3.jpg'
 
 export default function ItemCardContainer() {
