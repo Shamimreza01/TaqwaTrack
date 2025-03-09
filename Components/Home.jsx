@@ -9,9 +9,8 @@ import { getAllTime, getLocationName } from "../utils/api.js";
 import AlQuranLoad from "./AlQuranLoad.jsx";
 import AlQuran from "./AlQuran.jsx";
 import ItemCardContainer from "./ItemCardContainer.jsx";
-import { Outlet } from 'react-router';
 
-export default function App() {
+export default function Home() {
   const { getGeolocation } = useCustomFunction();
   const [locationName, setLocationName] = useState("");
   const [time, setTime] = useState({});
@@ -70,7 +69,14 @@ export default function App() {
 
   return (
     <div>
-      <Outlet />
+      <Header
+        location={locationName}
+        getGeolocation={getGeolocation}
+        fetchLocationAndTime={fetchLocationAndTime}
+      />
+      <CurrentTime />
+      <SalahTime time={time} />
+      <SandITime time={time} /> 
 
       {/* The list of Quran 
       1.English translation => edition='en.yusufali' 

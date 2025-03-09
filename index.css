@@ -1,154 +1,404 @@
-*{
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
 }
 
-.container{
-    background-color: aliceblue;
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100%;
-    height: 100vh;
-    background-position: center;
-    position: relative;
+.container {
+  background-color: aliceblue;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100vh;
+  background-position: center;
+  position: relative;
 }
 
-.search{
-    display: flex;
-    background: #2f7db3;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
+.search {
+  display: flex;
+  background: #2f7db3;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
 }
-.locationDisplay{
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    background-color: white;
-    width: 80%;
-    height: 5vh;
-    border: none;
-    border-top-left-radius: 8px;
-    border-bottom-left-radius: 8px;
-}
-.location{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-size: 1.4rem;
-    color: green;
-    background-color: white;
-    height: 5vh;
-    width: 10%;
-    border-left: 1px solid black;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
-}
-.currentDateTimeContainer{
-   display: flex;
-   justify-content: center;
-}
-.currentDateTime{
-    font-size: 1.2rem;
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-    background-color:#268176 ;
-    color: white;
-    height: 10vh;
-    width: 95%;
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-.mainContentContainer{
-    display: flex;
-    justify-content: center;
-}
-.mainContent{
-    display: flex;
-    align-items: center;
-    height:35vh;
-    width:95%;
-    border: 1px solid rgb(120, 22, 38);
-    border-radius: 20px;
-    background-color: white;
-    overflow: hidden;
-}
-.img{
-    background-image: url("icon.jpg");
-    height: 45vh; 
-    width:40%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    margin-top: 12vh;
-
-}
-
-.verticle{
-    font-weight: 100;
-    height: 20vh;
-    border: 1px solid black;
-}
-.mainInfo{
-    margin-left: 5%;
-    font-size: 1.2rem;
-}
-.suhoorIfterDisplay{
-    display: flex;
-    justify-content: center;
-}
-.suhoorIfterContainer{
-    margin-top: 2vh;
-    color: white;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    background: #268176;
-    height: 10vh;
-    width: 95%;
-    justify-content: space-evenly;
-    border: 1px solid red;
-    border-radius: 10px;
-}
-.bottomNavBarContainer{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    font-weight: 500;
-    background-color: #2f7db3;
-    color: white;
-    height: 8vh;
-    width: 100%;
-    position: absolute;
-    bottom: 0px;
-}
-.button{
-    cursor: pointer;
-    color: white;
+.locationDisplay {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-color: white;
+  width: 80%;
+  height: 5vh;
   border: none;
-  padding: 2px 5px;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 }
-.button:hover{
-    background-color: #1c5a8c;
-    padding: 2px 5px;
-    font-weight: bolder;
-    height:3vh;
-    border-radius: 3px;
-    transform: scale(1.2);
-    transition-duration: 2s;
+.location {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  color: green;
+  background-color: white;
+  height: 5vh;
+  width: 10%;
+  border-left: 1px solid black;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.currentDateTimeContainer {
+  display: flex;
+  justify-content: center;
+}
+.currentDateTime {
+  font-size: 1.2rem;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  background-color: #268176;
+  color: white;
+  height: 10vh;
+  width: 95%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.mainContentContainer {
+  display: flex;
+  justify-content: center;
+}
+.mainContent {
+  display: flex;
+  align-items: center;
+  height: 35vh;
+  width: 95%;
+  border: 1px solid rgb(120, 22, 38);
+  border-radius: 20px;
+  background-color: white;
+  overflow: hidden;
+}
+.img {
+  background-image: url("icon.jpg");
+  height: 45vh;
+  width: 40%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 12vh;
 }
 
-.text{
-    display: none;
-    font-size: 1.5rem;
-    text-align: right;
-    margin-right: 5%;
-    margin-top: 2vh;
+.verticle {
+  font-weight: 100;
+  height: 20vh;
+  border: 1px solid black;
+}
+.mainInfo {
+  margin-left: 5%;
+  font-size: 1.2rem;
+}
+.suhoorIfterDisplay {
+  display: flex;
+  justify-content: center;
+}
+.suhoorIfterContainer {
+  margin-top: 2vh;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  background: #268176;
+  height: 10vh;
+  width: 95%;
+  justify-content: space-evenly;
+  border: 1px solid red;
+  border-radius: 10px;
+}
+.bottomNavBarContainer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 600;
+  background: linear-gradient(to right, #0d3b66, #1c5a8c);
+  color: white;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  padding: 10px 0;
+}
+
+.button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.button i {
+  font-size: 20px;
+}
+
+.button:hover {
+  transform: translateY(-5px);
+}
+
+.active {
+  background: rgba(255, 255, 255, 0.3);
+  padding: 10px 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Floating effect */
+
+.text {
+  display: none;
+  font-size: 1.5rem;
+  text-align: right;
+  margin-right: 5%;
+  margin-top: 2vh;
+}
+
+.banglaQuranContainer {
+  font-family: Arial;
+  margin-top: 50px;
+  margin-bottom: 60px;
+}
+.surahList {
+  cursor: pointer;
+  padding: 10px;
+  padding-left: 20px;
+  list-style-type: none;
+  margin-bottom: 3px;
+  background-color: aliceblue;
+  border-radius: 4px;
+  margin: 10px 10px;
+}
+.surahList:hover {
+  background-color: rgb(217, 223, 227);
+}
+.ayahContainer {
+  margin-top: 80px;
+}
+.ayahList {
+  padding: 10px;
+  padding-left: 20px;
+  list-style-type: none;
+  margin-bottom: 3px;
+  background-color: aliceblue;
+}
+.backbutton {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #268176;
+  position: fixed;
+  color: white;
+  top: 40px;
+}
+.surahInfo {
+  width: 100vw;
+  text-align: center;
+  background-color: #2f7db3;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  font-size: large;
+  position: fixed;
+  top: 0;
+}
+.AlquranCollectionHeader {
+  width: 100vw;
+  text-align: center;
+  background-color: #2f7db3;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  font-size: large;
+  position: fixed;
+  top: 0;
+}
+.quranMainHeader {
+  width: 100vw;
+  text-align: center;
+  background-color: #2f7db3;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  font-size: large;
+  position: fixed;
+  top: 0;
+}
+
+.itemCardContainer {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+  margin-top: 50px;
+  margin-bottom: 70px;
+}
+
+/* Card Styling */
+.itemCard {
+  border: none;
+  width: 260px;
+  background: linear-gradient(135deg, #ffffff, #f3f4f6);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.itemCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+.itemCard img {
+  width: 100%;
+  height: auto; 
+  max-height: 180px; 
+  object-fit: cover; 
+  border-bottom: 2px solid #ddd;
+  transition: transform 0.3s ease-in-out;
+}
+
+.itemCard:hover img {
+  transform: scale(1.05);
+}
+
+.itemCard p {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #333;
+  padding: 10px;
+  background-color: white;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Subtle underline effect */
+.itemCard p::after {
+  content: "";
+  display: block;
+  width: 50%;
+  height: 2px;
+  background: #ff9800;
+  margin: 5px auto 0;
+  border-radius: 2px;
+}
+
+/* 🌟 FULLY RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .itemCardContainer {
+    gap: 15px;
+    padding: 10px;
+  }
+
+  .itemCard {
+    width: 90%;
+  }
+
+  .itemCard img {
+    max-height: 160px; /* Adjusting for tablets */
+  }
+
+  .itemCard p {
+    font-size: 1rem;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .itemCardContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .itemCard {
+    width: 95%;
+  }
+
+  .itemCard img {
+    max-height: 140px; /* Keeping a good balance on small screens */
+  }
+
+  .itemCard p {
+    font-size: 0.9rem;
+  }
+}
+
+
+
+
+a {
+  text-decoration: none;
+}
+@media screen and (max-width: 768px) {
+  .bottomNavBarContainer {
+    width: 100%;
+  }
+}
+
+
+/* error page css */
+.construction-container {
+    text-align: center;
+    padding: 50px;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    font-size: 2.5rem;
+    color: #d9534f;
+}
+
+p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.funny-text {
+    margin-top: 20px;
+    font-style: italic;
+    color: #5a5a5a;
+}
+
+.home-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.home-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.1);
 }

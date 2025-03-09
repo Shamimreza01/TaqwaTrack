@@ -1,13 +1,29 @@
+import React from "react";
+import { NavLink } from "react-router";
+
 export default function BottomNav() {
   return (
     <div className="bottomNavBarContainer">
-      <div className="learningQuran button"> Learn Quran</div>
-      <div className="quran button"> Quran </div>
-      <div className="learningDua button"> Learn Dua </div>
-      <div className="dailyDua button"> Daily Dua </div>
-      <div className="menu button">
+      <NavLink to="/" className="button">
+      <i class="fa-solid fa-house"></i>
+        <span> Home </span>
+      </NavLink>
+      <NavLink to="/quran" className="button">
+      <i className="fa-solid fa-book-open"></i>
+        <span>Quran</span>
+      </NavLink>
+      <NavLink to="/learn-dua" className="button">
+        <i className="fa-solid fa-hands-praying"></i>
+        <span>Dua</span>
+      </NavLink>
+      <NavLink to="/daily-dua" className="button">
+        <i className="fa-solid fa-star"></i>
+        <span>Daily</span>
+      </NavLink>
+      <NavLink to="/menu" className="button">
         <i className="fa-solid fa-bars"></i>
-      </div>
+        <span>Menu</span>
+      </NavLink>
     </div>
   );
 }
