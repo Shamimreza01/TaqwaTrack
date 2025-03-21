@@ -8,6 +8,21 @@ import AlQuranLoad from "./Components/AlQuranLoad";
 import UnderConstruction from "./Components/UnderConstruction";
 import FullQuranLoad from "./Components/FullQuranLoad";
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(new URL("/sw.js", import.meta.url)) // Absolute path from root
+      .then((registration) => {
+        console.log("Service Worker registered with scope:", registration.scope);
+      })
+      .catch((error) => {
+        console.error("Service Worker registration failed:", error);
+      });
+  });
+}
+
+
+
 const router=createBrowserRouter(
     [
       {
