@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
+import moment from 'moment-timezone';
 
 export default function CurrentTime() {
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState({});
-  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const localTimeZone = moment.tz.guess(); 
+
   useEffect(() => {
     const updateDateTime = () => {
-      const now = new Date();
-      setCurrentTime(now.toLocaleTimeString());
+      const now = moment().tz(localTimeZone); 
+
+      setCurrentTime(now.format("hh:mm:ss A")); 
       setCurrentDate({
-        date: now.getDate(),
-        month: monthNames[now.getMonth()],
-        year: now.getFullYear()
+        date: now.date(),
+        month: now.format("MMMM"), 
+        year: now.year(),
       });
     };
 
@@ -19,15 +22,14 @@ export default function CurrentTime() {
     updateDateTime();
 
     return () => clearInterval(intervalId);
-  }, []);
-  
-  
+  }, [localTimeZone]);
+
   return (
     <div className="currentDateTimeContainer">
       <div className="currentDateTime">
         <div className="dateTime">
           <div className="currentTimeContainer">
-            <span className="currentTime">{currentTime} <br /> {`${currentDate.date}-${currentDate.month}-${currentDate.year}`}</span>{" "}
+            <span className="currentTime">{currentTime} <br /> {currentDate.date ? `${currentDate.date}-${currentDate.month}-${currentDate.year}` : `Loading.......`}</span>{" "}
           </div>
           <div className="englishDate"> </div>
           <div className="arabicDate"> </div>

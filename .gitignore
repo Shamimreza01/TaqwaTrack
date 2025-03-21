@@ -2,3 +2,5 @@ node_modules/
 .parcel-cache/
 .env
 dist
+test.js
+serviceWorker.js

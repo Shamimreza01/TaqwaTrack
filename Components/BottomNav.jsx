@@ -5,7 +5,7 @@ export default function BottomNav() {
   return (
     <div className="bottomNavBarContainer">
       <NavLink to="/" className="button">
-      <i class="fa-solid fa-house"></i>
+      <i className="fa-solid fa-house"></i>
         <span> Home </span>
       </NavLink>
       <NavLink to="/quran" className="button">

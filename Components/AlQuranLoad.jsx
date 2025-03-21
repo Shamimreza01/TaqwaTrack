@@ -1,27 +1,43 @@
 import React, { useState, useEffect } from "react";
+import AlQuranLoadShimmer from "./AlQuranLoadShimmer";
 
-export default function AlQuranLoad({edition='quran-uthmani',name='Only Arabic'}) {
+export default function AlQuranLoad({
+  edition = "quran-uthmani",
+  name = "Only Arabic",
+}) {
   const [surahs, setSurahs] = useState([]);
   const [selectedSurah, setSelectedSurah] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
 
   useEffect(() => {
     async function loadQuran() {
-      let response = await fetch(
-        `https://api.alquran.cloud/v1/quran/${edition}`
-      );
-      let data = await response.json();
-      setSurahs(data.data.surahs);
+      try {
+        let response = await fetch(
+          `https://api.alquran.cloud/v1/quran/${edition}`
+        );
+        let data = await response.json();
+        setSurahs(data.data.surahs);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error fetching Quran data:", error);
+      }
     }
     loadQuran();
   }, []);
 
-  return (
-    <div className="banglaQuranContainer" style={{}}>
+  return isLoading ? (
+    <AlQuranLoadShimmer name={name} />
+  ) : (
+    <div className="banglaQuranContainer">
       {selectedSurah ? (
         <>
-          <div className="surahInfo">{selectedSurah.number} {selectedSurah.englishName} {selectedSurah.name}</div>
+          <div className="surahInfo">
+            {selectedSurah.number} {selectedSurah.englishName}{" "}
+            {selectedSurah.name}
+          </div>
           <button className="backbutton" onClick={() => setSelectedSurah(null)}>
-            <i className="fa-solid fa-circle-left"></i> Go To SurahList
+            <i className="fa-solid fa-circle-left"></i> Go To Surah List
           </button>
           <ul className="ayahContainer">
             {selectedSurah.ayahs.map((ayah) => (
@@ -40,12 +56,12 @@ export default function AlQuranLoad({edition='quran-uthmani',name='Only Arabic'}
                 className="surahList"
                 key={surah.number}
                 onClick={() => setSelectedSurah(surah)}
-                style={{}}
               >
                 {surah.number}. {surah.englishName} - {surah.name}
               </li>
             ))}
           </ul>
+          
         </>
       )}
     </div>

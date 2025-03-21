@@ -6,6 +6,7 @@ import Home from "./Components/Home";
 import ItemCardContainer from "./Components/ItemCardContainer";
 import AlQuranLoad from "./Components/AlQuranLoad";
 import UnderConstruction from "./Components/UnderConstruction";
+import FullQuranLoad from "./Components/FullQuranLoad";
 
 const router=createBrowserRouter(
     [
@@ -33,7 +34,12 @@ const router=createBrowserRouter(
           {
             path:'/quran/arabic',
             element:<AlQuranLoad edition="quran-uthmani" name="Arabic Non-Arab" />
+          },
+          {
+            path:'/quran/fullQuran',
+            element:<FullQuranLoad edition="quran-uthmani" name="Arabic Non-Arab" />
           }
+
         ]
       }
     ]

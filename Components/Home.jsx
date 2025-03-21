@@ -5,57 +5,70 @@ import SalahTime from "./SalahTime";
 import SandITime from "./SandITime";
 import BottomNav from "./BottomNav";
 import useCustomFunction from "../Hooks/useCustomFunction";
-import { getAllTime, getLocationName } from "../utils/api.js";
-import AlQuranLoad from "./AlQuranLoad.jsx";
-import AlQuran from "./AlQuran.jsx";
-import ItemCardContainer from "./ItemCardContainer.jsx";
+import { getLocationName } from "../utils/api.js";
+import { Coordinates, CalculationMethod, PrayerTimes } from "adhan";
+import moment from "moment-timezone";
 
 export default function Home() {
+  // State declarations
   const { getGeolocation } = useCustomFunction();
   const [locationName, setLocationName] = useState("");
   const [time, setTime] = useState({});
   const [coords, setCoords] = useState(null);
+  const [nextPrayerTime, setNextPrayerTime] = useState("");
+  const [prayerTimes, setPrayerTimes] = useState(null); // New state for prayer times
+  const [localTimeZone, setLocalTimeZone] = useState(""); // New state for time zone
+  const [prayerName,setPrayerName]=useState('');
 
-  const fetchLocationAndTime = async (latitude, longitude) => {
-    const [timeData, name] = await Promise.all([
-      getAllTime(latitude, longitude),
-      getLocationName(latitude, longitude),
-    ]);
-
-    setTime(timeData);
-    setLocationName(name);
-    localStorage.setItem("locationName", JSON.stringify(name));
-    localStorage.setItem("timeData", JSON.stringify(timeData));
+  // Function to format prayer times
+  const formatTime = (date, timeZone) => {
+    return moment(date).tz(timeZone).format("hh:mm A");
   };
 
+  // Function to calculate all prayer times based on coordinates
+  const getAllTime = (latitude, longitude) => {
+    const coordinates = new Coordinates(latitude, longitude);
+    const date = new Date();
+    const params = CalculationMethod.UmmAlQura();
+    params.adjustments.maghrib = 2;
+    const prayerTimes = new PrayerTimes(coordinates, date, params);
+    const localTimeZone = moment.tz.guess();
+
+    const results = {
+      suhoor: formatTime(prayerTimes.fajr - 3, localTimeZone),
+      fajr: formatTime(prayerTimes.fajr, localTimeZone),
+      sunrise: formatTime(prayerTimes.sunrise, localTimeZone),
+      dhuhr: formatTime(prayerTimes.dhuhr, localTimeZone),
+      asr: formatTime(prayerTimes.asr, localTimeZone),
+      maghrib: formatTime(prayerTimes.maghrib, localTimeZone),
+      isha: formatTime(prayerTimes.isha, localTimeZone),
+      timeZone: localTimeZone,
+    };
+    return { prayerTimes, localTimeZone, results };
+  };
+
+  // Function to get the next prayer time and set it
+  const getNextPrayerTime = (prayerTimes, localTimeZone) => {
+    const nextPrayer = prayerTimes.nextPrayer();
+    setPrayerName(nextPrayer);
+    const now = moment.tz(localTimeZone);
+    const nextPrayerMoment = moment(prayerTimes[nextPrayer]).tz(localTimeZone);
+    const duration = moment.duration(nextPrayerMoment.diff(now));
+    const countdown = `${duration.hours()}h ${duration.minutes()}m ${duration.seconds()}s`;
+    return {countdown,nextPrayer};
+  };
+
+  // useEffect hook to load initial data and set interval
   useEffect(() => {
-    const loadInitialData = async () => {
-      if (
-        localStorage.getItem("position") &&
-        localStorage.getItem("locationName") &&
-        localStorage.getItem("timeData")
-      ) {
-        const { latitude, longitude } = JSON.parse(
-          localStorage.getItem("position")
-        );
+    const loadData = async () => {
+      if (localStorage.getItem("position") && localStorage.getItem("locationName")) {
+        const { latitude, longitude } = JSON.parse(localStorage.getItem("position"));
         setCoords({ latitude, longitude });
-
-        let date = new Date();
-        let d = date.getDate().toString().padStart(2, "0");
-        let m = (date.getMonth() + 1).toString().padStart(2, "0");
-        let y = date.getFullYear();
-        let formattedDate = `${y}-${m}-${d}`;
-
-        const storedTimeData = JSON.parse(localStorage.getItem("timeData"));
-        if (formattedDate === storedTimeData?.date) {
-          setTime(storedTimeData);
-        } else {
-          const newTime = await getAllTime(latitude, longitude);
-          setTime(newTime);
-          localStorage.setItem("timeData", JSON.stringify(newTime));
-        }
+        const { prayerTimes, localTimeZone, results } = getAllTime(latitude, longitude);
+        setTime(results);
         setLocationName(JSON.parse(localStorage.getItem("locationName")));
-        console.log("Using data from localStorage");
+        setPrayerTimes(prayerTimes);
+        setLocalTimeZone(localTimeZone);
       } else {
         const pos = await getGeolocation();
         setCoords(pos);
@@ -64,8 +77,33 @@ export default function Home() {
       }
     };
 
-    loadInitialData();
-  }, []);
+    loadData();
+  }, []); // Run once when the component mounts
+
+  useEffect(() => {
+    // Only set the interval if prayerTimes and localTimeZone are available
+    if (prayerTimes && localTimeZone) {
+      const interval = setInterval(() => {
+        const {countdown,nextPrayer} = getNextPrayerTime(prayerTimes, localTimeZone);
+        setNextPrayerTime(countdown);
+      }, 1000);
+
+      // Cleanup interval on component unmount
+      return () => clearInterval(interval);
+    }
+  }, [prayerTimes, localTimeZone]); // Re-run this effect when prayerTimes or localTimeZone changes
+
+  // Function to fetch location name and prayer times
+  const fetchLocationAndTime = async (latitude, longitude) => {
+    const { prayerTimes, localTimeZone, results } = getAllTime(latitude, longitude);
+    const name = await getLocationName(latitude, longitude);
+    setTime(results);
+    setLocationName(name);
+    setNextPrayerTime(""); // Reset countdown when new location is fetched
+    localStorage.setItem("locationName", JSON.stringify(name));
+    setPrayerTimes(prayerTimes); // Save prayerTimes to state
+    setLocalTimeZone(localTimeZone); // Save time zone to state
+  };
 
   return (
     <div>
@@ -75,17 +113,8 @@ export default function Home() {
         fetchLocationAndTime={fetchLocationAndTime}
       />
       <CurrentTime />
-      <SalahTime time={time} />
-      <SandITime time={time} /> 
-
-      {/* The list of Quran 
-      1.English translation => edition='en.yusufali' 
-      2.Bangla Translation => edition='bn.bengali'
-      3.Arabic for non-arab => edition='quran-uthmani'
-      
-      */}
-      {/* <AlQuranLoad edition="bn.bengali" name="Bangla Translation" />
-      <ItemCardContainer/> */}
+      <SalahTime time={time} nextPrayerTime={nextPrayerTime} prayerName={prayerName} />
+      <SandITime time={time} />
       <BottomNav />
     </div>
   );

@@ -174,6 +174,7 @@
   margin-bottom: 60px;
 }
 .surahList {
+  height: 40px;
   cursor: pointer;
   padding: 10px;
   padding-left: 20px;
@@ -195,6 +196,10 @@
   list-style-type: none;
   margin-bottom: 3px;
   background-color: aliceblue;
+  font-size:30px;
+}
+.ayahBengali{
+  font-size:15px;
 }
 .backbutton {
   width: 100%;
@@ -204,6 +209,7 @@
   position: fixed;
   color: white;
   top: 40px;
+  z-index: 2;
 }
 .surahInfo {
   width: 100vw;
@@ -215,7 +221,9 @@
   font-size: large;
   position: fixed;
   top: 0;
+  z-index: 2;
 }
+
 .AlquranCollectionHeader {
   width: 100vw;
   text-align: center;
@@ -226,6 +234,7 @@
   font-size: large;
   position: fixed;
   top: 0;
+  z-index: 1;
 }
 .quranMainHeader {
   width: 100vw;
@@ -237,6 +246,7 @@
   font-size: large;
   position: fixed;
   top: 0;
+  z-index: 1;
 }
 
 .itemCardContainer {
@@ -307,12 +317,13 @@
 /* 🌟 FULLY RESPONSIVE DESIGN */
 @media (max-width: 768px) {
   .itemCardContainer {
+    margin-top: 20px;
     gap: 15px;
     padding: 10px;
   }
 
   .itemCard {
-    width: 90%;
+    width: 30%;
   }
 
   .itemCard img {
@@ -327,20 +338,19 @@
 
 @media (max-width: 480px) {
   .itemCardContainer {
-    flex-direction: column;
-    align-items: center;
+    margin-top: 70px;
   }
 
   .itemCard {
-    width: 95%;
+    width: 43%;
   }
 
   .itemCard img {
-    max-height: 140px; /* Keeping a good balance on small screens */
+    max-height: 140px; 
   }
 
   .itemCard p {
-    font-size: 0.9rem;
+    font-size: 0.6rem;
   }
 }
 
@@ -355,6 +365,61 @@ a {
     width: 100%;
   }
 }
+
+
+
+
+/* 🌟 Shimmer Effect */
+/* 🌟 Darker Shimmer Effect */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(180, 180, 180, 0.2) 25%,  /* Darker gray */
+    rgba(100, 100, 100, 0.4) 50%,  /* Even darker shimmer */
+    rgba(180, 180, 180, 0.2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmerEffect 1.2s infinite linear;
+  border-radius: 5px;
+  height: 40px;
+  width: 90%;
+  margin: 10px auto;
+  list-style: none;
+}
+
+/* ✨ Shimmer Animation */
+@keyframes shimmerEffect {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* 🌟 Darker Shimmer Effect for Ayah List */
+.ayahList.shimmer {
+  height: 20px;
+  width: 90%;
+  background: linear-gradient(
+    90deg,
+    rgba(160, 160, 160, 0.2) 25%, 
+    rgba(80, 80, 80, 0.5) 50%,  /* Stronger shimmer */
+    rgba(160, 160, 160, 0.2) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmerEffect 1.2s infinite linear;
+  border-radius: 4px;
+  margin: 5px auto;
+}
+
+
+
+
+
+
+
+
 
 
 /* error page css */
@@ -401,4 +466,71 @@ p {
 .home-button:hover {
     background-color: #0056b3;
     transform: scale(1.1);
+}
+
+/* font setting jsx */
+.settings-container {
+  width: 350px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.settings-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.font-option {
+  background: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+}
+
+.font-option p {
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+.button-group {
+  margin-top: 8px;
+}
+
+.button-group button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+  transition: 0.3s ease;
+}
+
+.button-group button:first-child {
+  background-color: #ff5a5a;
+  color: white;
+}
+
+.button-group button:last-child {
+  background-color: #5aaaff;
+  color: white;
+}
+
+.button-group button:hover {
+  opacity: 0.8;
+}
+audio {
+  z-index: 0; /* Audio stays behind */
+}
+
+.quranMainHeader,
+.AlquranCollectionHeader {
+  z-index: 2; /* Header appears in front of audio */
 }
