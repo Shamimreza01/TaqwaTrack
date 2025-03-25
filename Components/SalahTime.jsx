@@ -1,4 +1,13 @@
+import { useEffect } from "react";
+
 export default function SalahTime({ time ,nextPrayerTime ,prayerName}) {
+  useEffect(() => {
+    if (nextPrayerTime === "0h 12m 40s") {
+      const adhan = new Audio('/Azan.mp3');
+      adhan.play().catch(error => console.log("Playback prevented:", error));
+    
+    }
+  }, [nextPrayerTime]);
   return (
     <div className="mainContentContainer">
     <div className="mainContent">

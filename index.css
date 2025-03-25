@@ -224,7 +224,7 @@
   z-index: 2;
 }
 
-.AlquranCollectionHeader {
+.AlquranCollectionHeader,.DuaCollectionHeader {
   width: 100vw;
   text-align: center;
   background-color: #2f7db3;
@@ -249,7 +249,7 @@
   z-index: 1;
 }
 
-.itemCardContainer {
+.itemCardContainer,.DuaCardContainer {
   margin-top: 30px;
   display: flex;
   flex-wrap: wrap;
@@ -261,7 +261,7 @@
 }
 
 /* Card Styling */
-.itemCard {
+.itemCard ,.DuaCard{
   border: none;
   width: 260px;
   background: linear-gradient(135deg, #ffffff, #f3f4f6);
@@ -274,26 +274,26 @@
   align-items: center;
 }
 
-.itemCard:hover {
+.itemCard:hover,.DuaCard:hover {
   transform: translateY(-8px);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 
-.itemCard img {
+.itemCard img,.DuaCard img {
   width: 100%;
   height: auto; 
-  max-height: 180px; 
+  height: 180px; 
   object-fit: cover; 
   border-bottom: 2px solid #ddd;
   transition: transform 0.3s ease-in-out;
 }
 
-.itemCard:hover img {
+.itemCard:hover img,.DuaCard:hover img {
   transform: scale(1.05);
 }
 
-.itemCard p {
+.itemCard p ,.DuaCard p{
   text-align: center;
   font-size: 1.1rem;
   font-weight: 600;
@@ -304,7 +304,7 @@
 }
 
 /* Subtle underline effect */
-.itemCard p::after {
+.itemCard p::after ,.DuaCard p::after {
   content: "";
   display: block;
   width: 50%;
@@ -316,40 +316,40 @@
 
 /* 🌟 FULLY RESPONSIVE DESIGN */
 @media (max-width: 768px) {
-  .itemCardContainer {
+  .itemCardContainer,.DuaCardContainer {
     margin-top: 20px;
     gap: 15px;
     padding: 10px;
   }
 
-  .itemCard {
+  .itemCard,.DuaCard {
     width: 30%;
   }
 
-  .itemCard img {
+  .itemCard img,.DuaCard img {
     max-height: 160px; /* Adjusting for tablets */
   }
 
-  .itemCard p {
+  .itemCard p, .DuaCard p {
     font-size: 1rem;
     padding: 8px;
   }
 }
 
 @media (max-width: 480px) {
-  .itemCardContainer {
+  .itemCardContainer,.DuaCardContainer {
     margin-top: 70px;
   }
 
-  .itemCard {
+  .itemCard,.DuaCard {
     width: 43%;
   }
 
-  .itemCard img {
+  .itemCard img,.DuaCard img {
     max-height: 140px; 
   }
 
-  .itemCard p {
+  .itemCard p ,.DuaCard p{
     font-size: 0.6rem;
   }
 }

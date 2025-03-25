@@ -3,4 +3,5 @@ node_modules/
 .env
 dist
 test.js
-serviceWorker.js
+fetchQuran.js
+Assets/SurahForSalah.json
