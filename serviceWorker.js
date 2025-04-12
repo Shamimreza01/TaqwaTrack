@@ -1,58 +1,71 @@
-const CACHE_NAME = 'TaqwaTrack-v1';
-const urlsToCache = [
-    '/',
-    '/index.html',
-    '/index.css',
-    '/index.js',
-    '/icon-192.png',
-    '/icon-512.png',
-    '/manifest.webmanifest'
-];
-
-// Install Service Worker
-self.addEventListener('install', (event) => {
+const CACHE_NAME = "TaqwaTrack-v1";
+  const urlsToCache = [
+    "/",
+    "/index.html",
+    "/index.9e4c6fd2.css",
+    "/index.9e4c6fd2.css.map",
+    "/index.3d214d75.js",
+    "/index.3d214d75.js.map",
+    "/icon192x192.fa1a0c43.png",
+    "/icon512x512.a06ebf51png",
+    "/favicon.7155ca86.ico",
+    "/afterSalahDua.77dfffae.png",
+    "/AlQuran1.22efb9a9.png",
+    "/AlQuran2.7a425578.png",
+    "/AlQuran3.3e546881.jpg",
+    "apple-touch-icon.69428293.png",
+    "motivationalDua.7f7cd7e8.jpg",
+    "rabbanaDua.6f324ddc.png",
+    "/manifest.webmanifest",
+    "/Assets/*",
+    "/icon.fb2efb3d.jpg",
+  ];
+  
+  self.addEventListener("install", (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
-            })
+      caches.open(CACHE_NAME)
+        .then((cache) => cache.addAll(urlsToCache))
+        .catch(err => console.log('Cache addAll error:', err))
     );
-});
-
-// Fetch Requests Handling
-self.addEventListener('fetch', (event) => {
+  });
+  
+  self.addEventListener("fetch", (event) => {
+    // Skip non-GET requests and chrome-extension requests
+    if (event.request.method !== 'GET' || 
+        event.request.url.startsWith('chrome-extension://')) {
+      return;
+    }
+  
     event.respondWith(
-        caches.match(event.request)
+      caches.match(event.request)
+        .then((cachedResponse) => {
+          // Return cached response if found
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          
+          // Otherwise fetch from network
+          return fetch(event.request)
             .then((response) => {
-                // Serve cached response if available, else fetch from network
-                return response || fetch(event.request).then((networkResponse) => {
-                    // Ensure JavaScript files get correct MIME type
-                    if (event.request.url.endsWith('.js')) {
-                        return new Response(networkResponse.body, {
-                            headers: { 'Content-Type': 'application/javascript' }
-                        });
-                    }
-                    return networkResponse;
+              // Check if we received a valid response
+              if (!response || response.status !== 200 || response.type !== 'basic') {
+                return response;
+              }
+  
+              // Clone the response
+              const responseToCache = response.clone();
+              
+              caches.open(CACHE_NAME)
+                .then((cache) => {
+                  cache.put(event.request, responseToCache);
                 });
+                
+              return response;
             })
-            .catch(() => caches.match('/index.html')) // Serve index.html on failure
-    );
-});
-
-// Activate Service Worker and Clean Old Caches
-self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [CACHE_NAME];
-
-    event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (!cacheWhitelist.includes(cache)) {
-                        return caches.delete(cache);
-                    }
-                })
-            );
+            .catch(() => {
+              return caches.match('/offline.html'); 
+            });
         })
     );
-});
+  });
+ 

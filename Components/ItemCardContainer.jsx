@@ -16,17 +16,17 @@ export default function ItemCardContainer() {
         AlQuranImage={AlQuran1}
       />
         <AlQuranCard
-          edition={"bangla"}
+          edition={"bn.bengali"}
           name={"আল-কোরআন বাংলা "}
           AlQuranImage={AlQuran1}
         />
         <AlQuranCard
-          edition={"english"}
+          edition={"en.yusufali"}
           name={"Al-Quran English Translation"}
           AlQuranImage={AlQuran2}
         />
         <AlQuranCard
-          edition={"arabic"}
+          edition={"quran-uthmani"}
           name={"Al-Quran Arabic Non-Arab"}
           AlQuranImage={AlQuran3}
         />

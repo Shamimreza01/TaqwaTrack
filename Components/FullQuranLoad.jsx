@@ -61,14 +61,14 @@ export default function FullQuranLoad({ name = "Al-Quran" }) {
           <ul className="ayahContainer">
             {selectedSurah.ayahs.map((ayah) => (
               <li key={ayah.number} className="ayahList">
-                <div className="ayahArabic">
+                <div className="ayahArabic" style={{ fontSize: "30px" }}>
                   {ayah.textArabic}
                   {ayah.sajda && <span>Sajda</span>}
                   <span className="ayahNumberInSurah">
                     ({ayah.numberInSurah})
                   </span>
                 </div>
-                <div className="ayahBengali">{ayah.textBangla}</div>
+                <div className="ayahBengali" style={{fontSize:'12px'}}>{ayah.textBangla}</div>
                 <div>
                   {ayah.audioLink && (
                     <audio controls>

@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react";
+import { useLocation, useParams } from 'react-router';
 import AlQuranLoadShimmer from "./AlQuranLoadShimmer";
 
-export default function DuaLoad({ name = "Dua", dataName,id }) {
+export default function DuaLoad() {
   const [duas, setDuas] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); 
+  const [isLoading, setIsLoading] = useState(true);
+  const { dataName } = useParams();
+  const duaMeta = {
+    FortyRabbanaDua: { id: 1, name: "৪০ রাব্বানা দোয়া" },
+    FortyMotivationalAyah: { id: 2, name: "৪০টি মোটিভেশনাল আয়াত" },
+    AfterSalahDua: { id: 3, name: "সালাত পরবর্তী দোয়া" },
+  };
+  console.log(dataName);
+  const meta = duaMeta[dataName];
+  const id = meta?.id;
+  const name = meta?.name;
+
 
   const openIndexedDB = () => {
 
@@ -58,7 +70,8 @@ export default function DuaLoad({ name = "Dua", dataName,id }) {
     } else {
       console.error("dataName is required");
     }
-  }, [dataName]);
+  }
+  , [dataName]);
 
   return isLoading ? (
     <AlQuranLoadShimmer name={name} />

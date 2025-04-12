@@ -10,6 +10,18 @@ import FullQuranLoad from "./Components/FullQuranLoad";
 import DuaCardContainer from "./Components/DuaCardContainer";
 import DuaLoad from "./Components/DuaLoad";
 
+//service worker reg
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+      navigator.serviceWorker.register(new URL('./serviceWorker.js', import.meta.url))
+          .then((reg) => {
+              console.log('Service Worker registered successfully:', reg);
+          })
+          .catch((err) => {
+              console.error('Service Worker registration failed:', err);
+          });
+  });
+}
 
 
 const router=createBrowserRouter(
@@ -29,15 +41,8 @@ const router=createBrowserRouter(
             element:<ItemCardContainer/>
           },
           {
-            path:'/quran/bangla',
-            element:<AlQuranLoad edition="bn.bengali" name="আল-কোরআন বাংলা" />
-          },{
-            path:'/quran/english',
-            element:<AlQuranLoad edition="en.yusufali" name="English Translation" />
-          },
-          {
-            path:'/quran/arabic',
-            element:<AlQuranLoad edition="quran-uthmani" name="Arabic Non-Arab" />
+            path:'/quran/:edition',
+            element:<AlQuranLoad />
           },
           {
             path:'/quran/fullQuran',
@@ -48,18 +53,9 @@ const router=createBrowserRouter(
             element:<DuaCardContainer/>
           },
           {
-            path:'/learn-dua/FortyRabbanaDua',
-            element: <DuaLoad name="৪০ রাব্বানা দোয়া" dataName='FortyRabbanaDua' id={1}/>
-          },
-          {
-            path:'/learn-dua/FortyMotivationalAyah',
-            element:<DuaLoad name="40 motivational Ayah" dataName={'FortyMotivationalAyah'} id={2} />
-          },
-          {
-            path:'/learn-dua/AfterSalahDua',
-            element:<DuaLoad name="সালাত পরবর্তী দোয়া" dataName={'AfterSalahDua'} id={3} />
+            path:'/learn-dua/:dataName',
+            element: <DuaLoad/>
           }
-
         ]
       }
     ]
