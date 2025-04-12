@@ -1,5 +1,5 @@
 const CACHE_NAME = "TaqwaTrack-v1";
-const urlsToCache = [
+const STATIC_ASSETS = [
   "/",
   "/index.html",
   "/index.9e4c6fd2.css",
@@ -21,47 +21,62 @@ const urlsToCache = [
   // Note: wildcards like "/Assets/*" are NOT valid here; you must manually list those files
 ];
 
-// ✅ Install Event: Cache App Shell
 self.addEventListener("install", (event) => {
+  console.log("[SW] Install event");
+  self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(urlsToCache))
-      .catch((err) => console.log("Cache addAll error:", err))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
   );
 });
 
-// ✅ Fetch Event: Serve from cache, then fallback
-self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET" || event.request.url.startsWith("chrome-extension://")) {
-    return;
-  }
+// ✅ Activate: Clean up old caches
+self.addEventListener("activate", (event) => {
+  console.log("[SW] Activate event");
+  event.waitUntil(
+    caches.keys().then((cacheNames) =>
+      Promise.all(
+        cacheNames
+          .filter((name) => name !== CACHE_NAME)
+          .map((name) => caches.delete(name))
+      )
+    )
+  );
+  return self.clients.claim();
+});
 
-  const normalizedUrl = new URL(event.request.url);
-  normalizedUrl.search = ""; // ❗ Remove query params (e.g., ?123456)
+// ✅ Fetch: Serve from cache first, fallback to network, cache new requests
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
+  const reqUrl = new URL(event.request.url);
+
+  // Don't cache extensions, devtools, etc.
+  if (reqUrl.origin !== location.origin || reqUrl.protocol.startsWith("chrome")) return;
+
+  const cleanUrl = reqUrl.pathname;
 
   event.respondWith(
-    caches.match(normalizedUrl) // 🔁 use normalized URL for matching
-      .then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
+    caches.match(cleanUrl).then((cachedResponse) => {
+      if (cachedResponse) return cachedResponse;
 
-        return fetch(event.request)
-          .then((response) => {
-            if (!response || response.status !== 200 || response.type !== "basic") {
-              return response;
-            }
-
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(normalizedUrl, responseToCache); // ✅ store without query
-            });
-
+      return fetch(event.request)
+        .then((response) => {
+          if (
+            !response ||
+            response.status !== 200 ||
+            response.type !== "basic"
+          ) {
             return response;
-          })
-          .catch(() => {
-            return caches.match("/offline.html"); // optional offline fallback
+          }
+
+          const resClone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(cleanUrl, resClone);
           });
-      })
+
+          return response;
+        })
+        .catch(() => caches.match("/offline.html"));
+    })
   );
 });
