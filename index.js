@@ -53,7 +53,7 @@ const router=createBrowserRouter(
             element:<DuaCardContainer/>
           },
           {
-            path:'/learn-dua/:dataName',
+            path:'/:dataName',
             element: <DuaLoad/>
           }
         ]
