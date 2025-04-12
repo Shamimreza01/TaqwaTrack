@@ -97,7 +97,7 @@ export default function DuaLoad() {
               </div>
               <div style={{ fontSize: "12px" }}>{dua.bangla_translation}</div>
               <div style={{ fontSize: "8px", textAlign: "right" }}>
-                {dua.audio_link && (
+                {dua.audio_link && navigator.onLine && (
                   <audio controls>
                     <source src={dua.audio_link} type="audio/mpeg" />
                   </audio>
