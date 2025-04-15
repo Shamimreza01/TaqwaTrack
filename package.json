@@ -2,11 +2,10 @@
   "name": "taqwatrack",
   "version": "1.0.0",
   "description": "",
- "scripts": {
-  "start": "parcel index.html",
-  "build": "parcel build index.html --public-url ./"
-}
-,
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --public-url ./"
+  },
   "type": "module",
   "keywords": [],
   "author": "",

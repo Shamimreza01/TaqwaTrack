@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useParams } from 'react-router';
+import { useLocation, useParams } from "react-router";
 import AlQuranLoadShimmer from "./AlQuranLoadShimmer";
+import { fs } from "fs";
 
 export default function DuaLoad() {
   const [duas, setDuas] = useState(null);
@@ -16,48 +17,65 @@ export default function DuaLoad() {
   const id = meta?.id;
   const name = meta?.name;
 
+  // Read
 
   const openIndexedDB = () => {
-
     const openRequest = indexedDB.open("DuaDB", 1);
 
     openRequest.onupgradeneeded = (e) => {
-      const db = e.target.result; 
-      if (!db.objectStoreNames.contains('duas')) {
-        console.log("Creating object store");
-        const store = db.createObjectStore('duas', { keyPath: "id" });
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains("duas")) {
+        const store = db.createObjectStore("duas", { keyPath: "id" });
         store.createIndex("id", "id", { unique: true });
       }
     };
 
-
-    openRequest.onsuccess = (e) => {
-      const db = e.target.result; 
-      const transaction = db.transaction(['duas'], 'readwrite'); 
-      const store = transaction.objectStore('duas'); 
+    openRequest.onsuccess = async (e) => {
+      const db = e.target.result;
+    
+      // Open a read transaction to get local data
+      const readTransaction = db.transaction(["duas"], "readonly");
+      const store = readTransaction.objectStore("duas");
       const duaRequest = store.get(id);
-
+    
       duaRequest.onsuccess = async (e) => {
-        if (e.target.result) {
-          setDuas(e.target.result.data);
+        const localData = e.target.result?.data;
+    
+        // If offline, just use local data
+        if (!navigator.onLine) {
+          console.log("Offline — using local data");
+          setDuas(localData);
           setIsLoading(false);
-        } else {
-          fetch(`https://api-taqwatrack.onrender.com/${dataName}`)
-            .then((res) => res.json())
-            .then((data) => {
-              const transaction = db.transaction(['duas'], 'readwrite'); 
-              const store = transaction.objectStore('duas'); 
-              store.put({ id: id, data }); 
-              setDuas(data);
-              setIsLoading(false);
-            })
-            .catch((error) => {
-              console.error("Fetch error:", error);
-              setIsLoading(false);
-            });
+          return;
         }
+    
+        try {
+          const response = await fetch(`https://api-taqwatrack.onrender.com/${dataName}`);
+          const apiData = await response.json();
+    
+          const isSame = JSON.stringify(localData) === JSON.stringify(apiData);
+    
+          if (!isSame) {
+            // Now open a NEW transaction to write
+            const writeTransaction = db.transaction(["duas"], "readwrite");
+            const writeStore = writeTransaction.objectStore("duas");
+            writeStore.put({ id: id, data: apiData });
+    
+            console.log("Updated data in IndexedDB");
+            setDuas(apiData);
+          } else {
+            console.log("No changes — using local data");
+            setDuas(localData);
+          }
+        } catch (err) {
+          console.error("API fetch error:", err);
+          setDuas(localData); // Fallback to local
+        }
+    
+        setIsLoading(false);
       };
     };
+    
 
     openRequest.onerror = (e) => {
       console.error("Error opening IndexedDB", e);
@@ -70,8 +88,7 @@ export default function DuaLoad() {
     } else {
       console.error("dataName is required");
     }
-  }
-  , [dataName]);
+  }, [dataName]);
 
   return isLoading ? (
     <AlQuranLoadShimmer name={name} />
@@ -91,7 +108,7 @@ export default function DuaLoad() {
             >
               <div className="ayahArabic">{dua.arabic}</div>
               <div className="ayahBengali">
-                {dua.dua_number||dua.ayah_number}
+                {dua.dua_number || dua.ayah_number}
                 {".  "}
                 {dua.bangla_pronunciation}
               </div>
